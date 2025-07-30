@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حاسبة تكلفة الفصل</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>حساب تكلفة الفصل</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       background-color: #0f001f;
       color: #fff;
       font-family: 'Cairo', sans-serif;
-      padding: 10px;
+      padding: 20px;
       max-width: 600px;
       margin: auto;
     }
@@ -24,63 +20,66 @@
       text-shadow: 0 0 10px #ff66cc;
       text-align: center;
       font-size: 22px;
-      margin-bottom: 15px;
     }
 
-    label, select, input, legend {
+    label,
+    select,
+    input,
+    legend {
       display: block;
-      margin: 8px 0 4px;
-      font-size: 15px;
+      margin: 10px 0 5px;
+      font-size: 16px;
     }
 
-    select, input[type="number"], input[type="text"] {
+    select,
+    input[type='number'],
+    input[type='text'] {
       background-color: #1a0033;
       color: #fff;
-      border: 1.5px solid #cc00ff;
-      padding: 8px;
+      border: 2px solid #cc00ff;
+      padding: 10px;
       width: 100%;
       border-radius: 8px;
-      box-shadow: 0 0 5px #cc00ff;
-      font-size: 14px;
+      box-shadow: 0 0 10px #cc00ff;
     }
 
     fieldset {
-      margin-top: 12px;
-      border: 1.5px solid #ff66cc;
+      margin-top: 15px;
+      border: 4px solid #ff66cc;
       padding: 10px;
-      border-radius: 8px;
+      border-radius: 55px;
     }
 
     fieldset label {
       display: flex;
       align-items: center;
-      gap: 6px;
-      margin-bottom: 6px;
-      font-size: 14px;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 15px;
     }
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       accent-color: #ff66cc;
       margin: 0;
     }
 
     button {
       margin-top: 20px;
-      padding: 10px;
+      padding: 12px;
       background-color: #cc00ff;
       color: white;
       border: none;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #ff66cc;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ff66cc;
       width: 100%;
       transition: 0.3s;
     }
 
     button:hover {
       background-color: #ff33cc;
-      box-shadow: 0 0 15px #ff99dd;
+      box-shadow: 0 0 25px #ff99dd;
     }
 
     input[readonly] {
@@ -88,75 +87,88 @@
       color: #ccc;
     }
 
+    /* زر الطباعة بلون مختلف */
+    #printBtn {
+      background-color: #663399;
+      margin-top: 10px;
+    }
+
+    #printBtn:hover {
+      background-color: #8453b2;
+      box-shadow: 0 0 20px #a080d4;
+    }
+
     @media (max-width: 480px) {
+      body {
+        padding: 15px;
+        font-size: 40px;
+      }
       h2 {
-        font-size: 18px;
-      }
-      label, select, input, legend {
-        font-size: 14px;
-      }
-      button {
-        font-size: 15px;
-        padding: 10px;
+        font-size: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <h2>💡 حاسبة تكلفة الفصل</h2>
+  <h2>💡 حساب تكلفة الفصل للطلبة المقبولين على الفصل الأول 2025/2026</h2>
+<label for="studentName">اسم الطالب:</label>
+<input type="text" id="studentName" placeholder="أدخل اسم الطالب" />
 
-  <label for="program">البرنامج:</label>
+  <label for="program">البرنامج ورسوم التسجيل:</label>
   <select id="program" onchange="filterMajors()">
     <option value="450">البكالوريوس - 450 دينار</option>
     <option value="400">الدبلوم الدولي - 400 دينار</option>
     <option value="325">الدبلوم المحلي - 325 دينار</option>
   </select>
 
-  <label for="major">التخصص:</label>
+  <label for="major">التخصص و سعر الساعة:</label>
   <select id="major"></select>
 
   <fieldset>
     <legend>رسوم إضافية:</legend>
-    <label><input type="checkbox" id="pearson" value="100"> رسوم بيرسون - 100 دينار</label>
-    <label><input type="checkbox" id="placement" value="50"> امتحان مستوى - 50 دينار</label>
-    <label><input type="checkbox" id="studentFund" value="1"> صندوق الطالب - 1 دينار</label>
+    <label><input type="checkbox" id="pearson" value="100" />رسوم بيرسون – 100 دينار (بمجموع 400 دينار تدفع على 4 دفعات)</label>
+    <label><input type="checkbox" id="placement" value="50" /> امتحان مستوى – 50 دينار (يدفع لمرة واحدة)</label>
+    <label><input type="checkbox" id="studentFund" value="1" /> صندوق الطالب – 1 دينار</label>
+    <label><input type="checkbox" id="balqaSupervision" value="10" /> رسوم اشراف جامعة البلقاء – 10 دينار </label>
+    <label><input type="checkbox" id="uniform" value="100" /> رسوم زي – 100 دينار(فقط لتخصص السيارات والفندقي) </label>
   </fieldset>
 
   <fieldset>
     <legend>الخصومات:</legend>
-    <label><input type="checkbox" class="discount" value="10"> الدفع الكاش – 10%</label>
-    <label><input type="checkbox" class="discount" value="5"> معدل الثانوية العامة – 5%</label>
-    <label><input type="checkbox" class="discount" value="5"> خصم الأخوة – 5%</label>
-    <label><input type="checkbox" class="discount" value="15"> مجسر لومينوس – 15%</label>
+    <label><input type="checkbox" class="discount" value="10" /> الدفع الكاش – 10%</label>
+    <label><input type="checkbox" class="discount" value="5" /> معدل الثانوية العامة – 5%</label>
+    <label><input type="checkbox" class="discount" value="5" /> خصم الأخوة – 5%</label>
+    <label><input type="checkbox" class="discount" value="15" /> مجسر لومينوس – 15%</label>
   </fieldset>
 
   <label for="hours">عدد الساعات:</label>
-  <input type="number" id="hours" min="1">
+  <input type="number" id="hours" min="1" />
 
-  <label for="firstPayment">الدفعة الأولى (اختياري):</label>
-  <input type="number" id="firstPayment" min="0" value="0">
+  <label for="priceBeforeDiscount">سعر الساعات قبل الخصم:</label>
+  <input type="text" id="priceBeforeDiscount" readonly />
+
+  <label for="priceAfterDiscount">سعر الساعات بعد الخصم:</label>
+  <input type="text" id="priceAfterDiscount" readonly />
+
+  <label for="initialPayment">الدفعة الأولى:</label>
+  <input type="number" id="initialPayment" min="0" value="0" />
+
+  <label for="total">التكلفة النهائية بعد الدفعة الأولى:</label>
+  <input type="text" id="total" readonly />
 
   <label for="installments">عدد الأقساط:</label>
   <select id="installments">
-    <option value="1">بلا أقساط</option>
+    <option value="1">كاش</option>
     <option value="2">على دفعتين</option>
     <option value="3">على 3 دفعات</option>
     <option value="4">على 4 دفعات</option>
   </select>
 
-  <label for="priceBeforeDiscount">سعر الساعات قبل الخصم:</label>
-  <input type="text" id="priceBeforeDiscount" readonly>
-
-  <label for="priceAfterDiscount">سعر الساعات بعد الخصم:</label>
-  <input type="text" id="priceAfterDiscount" readonly>
-
-  <label for="total">التكلفة النهائية:</label>
-  <input type="text" id="total" readonly>
-
   <label for="installmentValue">قيمة كل قسط:</label>
-  <input type="text" id="installmentValue" readonly>
+  <input type="text" id="installmentValue" readonly />
 
   <button onclick="calculate()">احسب</button>
+  <button id="printBtn" type="button" onclick="printInvoice()">🖨️ طباعة كشف التكلفة (PDF)</button>
 
   <script>
     const majorsData = {
@@ -170,9 +182,7 @@
         { name: "اللوجستيات وسلاسل الإمداد", value: 45 },
         { name: "إدارة الفنادق والفعاليات", value: 45 }
       ],
-      "الدبلوم الدولي": [
-        { name: "جميع التخصصات", value: 45 }
-      ],
+      "الدبلوم الدولي": [{ name: "جميع التخصصات", value: 45 }],
       "الدبلوم المحلي": [
         { name: "التجميل", value: 35 },
         { name: "فنون الطهي", value: 39 },
@@ -186,7 +196,7 @@
       const selected = program.options[program.selectedIndex].text.split(" - ")[0];
       const majorSelect = document.getElementById("major");
       majorSelect.innerHTML = "";
-      majorsData[selected].forEach(opt => {
+      majorsData[selected].forEach((opt) => {
         const option = document.createElement("option");
         option.value = opt.value;
         option.textContent = `${opt.name} - ${opt.value} دينار`;
@@ -198,36 +208,53 @@
       const programFee = parseFloat(document.getElementById("program").value);
       const hourRate = parseFloat(document.getElementById("major").value);
       const hours = parseFloat(document.getElementById("hours").value);
-      const firstPayment = parseFloat(document.getElementById("firstPayment").value) || 0;
+      const initialPayment = parseFloat(document.getElementById("initialPayment").value) || 0;
       const installmentCount = parseInt(document.getElementById("installments").value);
+
+      if (isNaN(hours) || hours <= 0) {
+        alert("الرجاء إدخال عدد ساعات صحيح أكبر من صفر.");
+        return;
+      }
 
       let extraFees = 0;
       if (document.getElementById("pearson").checked) extraFees += 100;
       if (document.getElementById("placement").checked) extraFees += 50;
       if (document.getElementById("studentFund").checked) extraFees += 1;
-
-      let totalDiscount = 0;
-      document.querySelectorAll(".discount:checked").forEach(cb => {
-        totalDiscount += parseFloat(cb.value);
-      });
+      if (document.getElementById("balqaSupervision").checked) extraFees += 10; // تم التعديل هنا
+      if (document.getElementById("uniform").checked) extraFees += 100;
 
       const priceBefore = hourRate * hours;
-      const discountValue = priceBefore * (totalDiscount / 100);
-      const priceAfter = priceBefore - discountValue;
-
-      const total = priceAfter + programFee + extraFees - firstPayment;
-      const installmentValue = total / installmentCount;
-
       document.getElementById("priceBeforeDiscount").value = priceBefore.toFixed(2);
+
+      // جمع الخصومات
+      let totalDiscountPercent = 0;
+      document.querySelectorAll(".discount:checked").forEach((d) => {
+        totalDiscountPercent += parseFloat(d.value);
+      });
+
+      const discountValue = priceBefore * (totalDiscountPercent / 100);
+      const priceAfter = priceBefore - discountValue;
       document.getElementById("priceAfterDiscount").value = priceAfter.toFixed(2);
+
+      const total = priceAfter + programFee + extraFees - initialPayment;
       document.getElementById("total").value = total.toFixed(2);
+
+      // حماية لتجنب القسمة على صفر
+      let installmentValue = 0;
+      if (installmentCount > 0) {
+        installmentValue = total / installmentCount;
+      }
       document.getElementById("installmentValue").value = installmentValue.toFixed(2);
+    }
+
+    function printInvoice() {
+      window.print();
     }
 
     window.onload = filterMajors;
   </script>
 
-  <p style="text-align:center; margin-top:20px; font-size:11px; color:#aaa;">
+  <p style="text-align:center; margin-top:30px; font-size:12px; color:#aaa;">
     تم التصميم بواسطة <strong style="color:#ff66cc;">YOUSEF DASA</strong> – جميع الحقوق محفوظة ©
   </p>
 </body>
