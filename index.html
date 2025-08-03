@@ -111,6 +111,12 @@
       }
     }
 
+    #invoice {
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
+    }
+
     @media print {
       body * {
         visibility: hidden;
@@ -127,6 +133,8 @@
         color: #000;
         background: #fff;
         padding: 20px;
+        height: auto;
+        overflow: visible;
       }
       table {
         width: 100%;
@@ -203,7 +211,7 @@
   <button onclick="calculate()">احسب</button>
   <button id="printBtn" type="button" onclick="printInvoice()">🖨️ طباعة كشف التكلفة (PDF)</button>
 
-  <div id="invoice" style="display:none"></div>
+  <div id="invoice"></div>
 
   <p style="text-align:center; margin-top:30px; font-size:12px; color:#aaa;">
     تم التصميم بواسطة <strong style="color:#ff66cc;">YOUSEF DASA</strong> – جميع الحقوق محفوظة ©
@@ -258,7 +266,7 @@
       let extraFees = 0;
       let extraDetails = [];
       const extras = [
-        { id: "pearson", name: "رسوم بيرسون – 100 دينار (بمجموع 400 دينار تدفع على 4 دفعات)", value: 100 },
+        { id: "pearson", name: "رسوم بيرسون", value: 100 },
         { id: "placement", name: "امتحان مستوى", value: 50 },
         { id: "studentFund", name: "صندوق الطالب", value: 1 },
         { id: "balqaSupervision", name: "رسوم اشراف جامعة البلقاء", value: 20 },
@@ -296,7 +304,7 @@
 
       const invoiceHTML = `
         <h3 style="text-align:center">كشف تكلفة الطالب</h3>
-        <p><strong>ألاسم:</strong> ${studentName}</p>
+        <p><strong>اسم الطالب:</strong> ${studentName}</p>
         <table>
           <tr><th>عدد الساعات</th><td>${hours}</td></tr>
           <tr><th>سعر الساعة</th><td>${hourRate}</td></tr>
@@ -317,9 +325,14 @@
 
     function printInvoice() {
       const invoice = document.getElementById("invoice");
-      invoice.style.display = "block";
-      window.print();
-      invoice.style.display = "none";
+      invoice.style.visibility = "visible";
+      invoice.style.height = "auto";
+
+      setTimeout(() => {
+        window.print();
+        invoice.style.visibility = "hidden";
+        invoice.style.height = "0";
+      }, 300);
     }
 
     document.addEventListener("DOMContentLoaded", filterMajors);
