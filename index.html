@@ -111,6 +111,12 @@
       }
     }
 
+    #invoice {
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
+    }
+
     @media print {
       body * {
         visibility: hidden;
@@ -127,16 +133,17 @@
         color: #000;
         background: #fff;
         padding: 20px;
+        height: auto;
+        overflow: visible;
       }
       table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        border: 2px solid #000;
       }
       th, td {
-        border: 1.5px solid #000;
-        padding: 10px;
+        border: 1px solid #000;
+        padding: 8px;
         text-align: center;
       }
     }
@@ -160,11 +167,11 @@
 
   <fieldset>
     <legend>رسوم إضافية:</legend>
-    <label><input type="checkbox" id="pearson" value="100" />رسوم بيرسون  – 100 دينار (بمجموع 400 دينار تدفع على 4 دفعات)</label>
+    <label><input type="checkbox" id="pearson" value="100" />رسوم بيرسون – 100 دينار (بمجموع 400 دينار تدفع على 4 دفعات)</label>
     <label><input type="checkbox" id="placement" value="50" /> امتحان مستوى – 50 دينار (يدفع لمرة واحدة)</label>
     <label><input type="checkbox" id="studentFund" value="1" /> صندوق الطالب – 1 دينار</label>
     <label><input type="checkbox" id="balqaSupervision" value="20" /> رسوم اشراف جامعة البلقاء – 10 دينار </label>
-    <label><input type="checkbox" id="uniform" value="100" />رسوم زي – 100 دينار(فقط لتخصص السيارات والفندق</</label>
+    <label><input type="checkbox" id="uniform" value="100" /> رسوم زي – 100 دينار(فقط لتخصص السيارات والفندقي)</label>
   </fieldset>
 
   <fieldset>
@@ -204,7 +211,7 @@
   <button onclick="calculate()">احسب</button>
   <button id="printBtn" type="button" onclick="printInvoice()">🖨️ طباعة كشف التكلفة (PDF)</button>
 
-  <div id="invoice" style="display:none"></div>
+  <div id="invoice"></div>
 
   <p style="text-align:center; margin-top:30px; font-size:12px; color:#aaa;">
     تم التصميم بواسطة <strong style="color:#ff66cc;">YOUSEF DASA</strong> – جميع الحقوق محفوظة ©
@@ -259,7 +266,7 @@
       let extraFees = 0;
       let extraDetails = [];
       const extras = [
-        { id: "pearson", name: "رسوم بيرسون – 100 دينار (بمجموع 400 دينار تدفع على 4 دفعات)", value: 100 },
+        { id: "pearson", name: "رسوم بيرسون", value: 100 },
         { id: "placement", name: "امتحان مستوى", value: 50 },
         { id: "studentFund", name: "صندوق الطالب", value: 1 },
         { id: "balqaSupervision", name: "رسوم اشراف جامعة البلقاء", value: 20 },
@@ -296,9 +303,9 @@
       const studentName = document.getElementById("studentName").value || "—";
 
       const invoiceHTML = `
-        <h3 style="text-align:center">كشف تكلفة الفصل</h3>
+        <h3 style="text-align:center">كشف تكلفة الطالب</h3>
+        <p><strong>اسم الطالب:</strong> ${studentName}</p>
         <table>
-          <tr><th style="width: 150px;">اسم الطالب</th><td style="text-align:right;">${studentName}</td></tr>
           <tr><th>عدد الساعات</th><td>${hours}</td></tr>
           <tr><th>سعر الساعة</th><td>${hourRate}</td></tr>
           <tr><th>سعر الساعات قبل الخصم</th><td>${priceBefore.toFixed(2)}</td></tr>
@@ -318,9 +325,14 @@
 
     function printInvoice() {
       const invoice = document.getElementById("invoice");
-      invoice.style.display = "block";
-      window.print();
-      invoice.style.display = "none";
+      invoice.style.visibility = "visible";
+      invoice.style.height = "auto";
+
+      setTimeout(() => {
+        window.print();
+        invoice.style.visibility = "hidden";
+        invoice.style.height = "0";
+      }, 300);
     }
 
     document.addEventListener("DOMContentLoaded", filterMajors);
